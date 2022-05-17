@@ -7,11 +7,8 @@ import BlogForm from './components/BlogForm'
 import Blogs from './components/Blogs'
 import Togglable from './components/Togglable'
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
   const blogFormRef = useRef()
@@ -30,20 +27,21 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
+  const login = async (credentials) => {
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
       notification(`${user.username} logged in`)
     } catch (error) {
       notification(error.response.data.error, true)
     }
+  }
+
+  const logout = () => {
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
   }
 
   const createBlog = (blogObject) => {
@@ -57,11 +55,6 @@ const App = () => {
       .catch((error) => {
         notification(error.response.data.error, true)
       })
-  }
-
-  const logout = () => {
-    window.localStorage.removeItem('loggedUser')
-    setUser(null)
   }
 
   const notification = (message, error = false) => {
@@ -82,13 +75,7 @@ const App = () => {
       <h1>Bloglist app</h1>
       <Notification message={notificationMessage} />
       {user === null ?
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />:
+        <LoginForm login={login} />:
         <div>
           <p>
             {user.name} logged in
