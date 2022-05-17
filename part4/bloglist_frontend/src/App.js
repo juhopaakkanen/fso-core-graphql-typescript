@@ -75,7 +75,7 @@ const App = () => {
       <h1>Bloglist app</h1>
       <Notification message={notificationMessage} />
       {user === null ?
-        <LoginForm login={login} />:
+        <LoginForm login={login} /> :
         <div>
           <p>
             {user.name} logged in
@@ -88,8 +88,5 @@ const App = () => {
     </div>
   )
 }
-
-
-
 
 export default App
