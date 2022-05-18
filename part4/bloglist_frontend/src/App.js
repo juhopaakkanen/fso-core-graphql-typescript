@@ -57,6 +57,18 @@ const App = () => {
       })
   }
 
+  const updateLikes = (blogId, blogObject) => {
+    blogService
+      .update(blogId, blogObject)
+      .then((updatedBlog) => {
+        setBlogs(blogs.map(blog => blog.id !== blogId ? blog : updatedBlog))
+        notification(`Liked ${updatedBlog.title}`)
+      })
+      .catch((error) => {
+        notification(error.response.data.error, true)
+      })
+  }
+
   const notification = (message, error = false) => {
     setNotificationMessage({ message, error })
     setTimeout(() => {
@@ -82,7 +94,7 @@ const App = () => {
             <button onClick={logout}> logout</button>
           </p>
           {blogForm()}
-          <Blogs blogs={blogs} />
+          <Blogs blogs={blogs} handleLikes={updateLikes} />
         </div>
       }
     </div>
