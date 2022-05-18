@@ -57,6 +57,21 @@ const App = () => {
       })
   }
 
+  const removeBlog = (blogId) => {
+    const blog = blogs.find(blog => blog.id === blogId)
+    if (window.confirm(`Delete ${blog.title} ${blog.author}?`)) {
+      blogService
+        .remove(blogId)
+        .then(() => {
+          setBlogs(blogs.filter(blog => blog.id !== blogId))
+          notification(`Removed ${blog.title} ${blog.author}`)
+        })
+        .catch((error) => {
+          notification(error.response.data.error, true)
+        })
+    }
+  }
+
   const updateLikes = (blogId, blogObject) => {
     blogService
       .update(blogId, blogObject)
@@ -96,7 +111,12 @@ const App = () => {
             <button onClick={logout}> logout</button>
           </p>
           {blogForm()}
-          <Blogs blogs={blogs} handleLikes={updateLikes} />
+          <Blogs
+            blogs={blogs}
+            handleLikes={updateLikes}
+            handleRemove={removeBlog}
+            user={user}
+          />
         </div>
       }
     </div>
