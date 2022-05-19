@@ -60,7 +60,4 @@ blogsRouter.put('/:id', async (request, response) => {
   response.status(200).json(modifiedBlog)
 })
 
-
-
-
 module.exports = blogsRouter
