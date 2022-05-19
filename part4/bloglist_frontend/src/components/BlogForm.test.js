@@ -8,18 +8,17 @@ test('creating a new blog works as expected', async () => {
   const mockHandler = jest.fn()
   render(<BlogForm createBlog={mockHandler} />)
 
-  const inputData = ['test title', 'test author', 'test url']
-  const inputs = screen.getAllByRole('textbox')
+  const inputs = ['test title', 'test author', 'test url']
   const user = userEvent.setup()
 
-  await user.type(inputs[0], inputData[0])
-  await user.type(inputs[1], inputData[1])
-  await user.type(inputs[2], inputData[2])
+  await user.type(screen.getByPlaceholderText('title'), inputs[0])
+  await user.type(screen.getByPlaceholderText('author'), inputs[1])
+  await user.type(screen.getByPlaceholderText('url'), inputs[2])
   const createButton = screen.getByText('create')
   await user.click(createButton)
 
   expect(mockHandler.mock.calls).toHaveLength(1)
-  expect(mockHandler.mock.calls[0][0].title).toBe(inputData[0])
-  expect(mockHandler.mock.calls[0][0].author).toBe(inputData[1])
-  expect(mockHandler.mock.calls[0][0].url).toBe(inputData[2])
+  expect(mockHandler.mock.calls[0][0].title).toBe(inputs[0])
+  expect(mockHandler.mock.calls[0][0].author).toBe(inputs[1])
+  expect(mockHandler.mock.calls[0][0].url).toBe(inputs[2])
 })
