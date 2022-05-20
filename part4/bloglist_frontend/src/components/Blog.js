@@ -8,7 +8,6 @@ const Blog = ({ blog, handleLikes, handleRemove, user }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
   const [visible, setVisible] = useState(false)
 
   const handleLikeClick = (event) => {
@@ -27,7 +26,7 @@ const Blog = ({ blog, handleLikes, handleRemove, user }) => {
     handleRemove(blog.id)
   }
 
-  const showDetails = () => {
+  const details = () => {
     if (visible)
       return (
         <div>
@@ -35,7 +34,7 @@ const Blog = ({ blog, handleLikes, handleRemove, user }) => {
 likes {blog.likes}
           <button onClick={handleLikeClick}>likes</button> <br />
           {blog.author}<br />
-          {blog.user.username === user.username
+          {(blog.user.id === user.id || blog.user === user.id)
             ? <button onClick={handleRemoveClick}>remove</button>
             : null
           }
@@ -47,7 +46,7 @@ likes {blog.likes}
     <div style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={() => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
-      {showDetails()}
+      {details()}
     </div>
   )}
 
