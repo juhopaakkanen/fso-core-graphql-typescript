@@ -10,7 +10,7 @@ import Togglable from './components/Togglable'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -35,9 +35,9 @@ const App = () => {
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      notification(`${user.username} logged in`)
+      notificate(`${user.username} logged in`)
     } catch (error) {
-      notification(error.response.data.error, true)
+      notificate(error.response.data.error, true)
     }
   }
 
@@ -52,9 +52,9 @@ const App = () => {
       blogService.setToken(user.token)
       const newBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(newBlog))
-      notification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
+      notificate(`a new blog ${blogObject.title} by ${blogObject.author} added`)
     } catch (error) {
-      notification(error.response.data.error, true)
+      notificate(error.response.data.error, true)
     }
   }
 
@@ -65,10 +65,10 @@ const App = () => {
       if (window.confirm(`Delete ${blog.title} ${blog.author}?`)) {
         await blogService.remove(blogId)
         setBlogs(blogs.filter(blog => blog.id !== blogId))
-        notification(`Removed ${blog.title} ${blog.author}`)
+        notificate(`Removed ${blog.title} ${blog.author}`)
       }
     } catch (error) {
-      notification(error.response.data.error, true)
+      notificate(error.response.data.error, true)
     }
   }
 
@@ -78,16 +78,16 @@ const App = () => {
       setBlogs(blogs
         .map(blog => blog.id !== blogId ? blog : updatedBlog)
         .sort((a, b) => b.likes - a.likes))
-      notification(`Liked ${updatedBlog.title}`)
+      notificate(`Liked ${updatedBlog.title}`)
     } catch (error) {
-      notification(error.response.data.error, true)
+      notificate(error.response.data.error, true)
     }
   }
 
-  const notification = (message, error = false) => {
-    setNotificationMessage({ message, error })
+  const notificate = (message, error = false) => {
+    setNotification({ message, error })
     setTimeout(() => {
-      setNotificationMessage(null)
+      setNotification(null)
     }, 5000)
   }
 
@@ -100,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h1>Bloglist app</h1>
-      <Notification message={notificationMessage} />
+      <Notification notification={notification} />
       {user === null ?
         <LoginForm login={login} /> :
         <div>

@@ -6,14 +6,14 @@ import BlogForm from './BlogForm'
 
 test('creating a new blog works as expected', async () => {
   const mockHandler = jest.fn()
-  render(<BlogForm createBlog={mockHandler} />)
+  const { container } = render(<BlogForm createBlog={mockHandler} />)
 
   const inputs = ['test title', 'test author', 'test url']
   const user = userEvent.setup()
 
-  await user.type(screen.getByPlaceholderText('title'), inputs[0])
-  await user.type(screen.getByPlaceholderText('author'), inputs[1])
-  await user.type(screen.getByPlaceholderText('url'), inputs[2])
+  await user.type(container.querySelector('#title-input'), inputs[0])
+  await user.type(container.querySelector('#author-input'), inputs[1])
+  await user.type(container.querySelector('#url-input'), inputs[2])
   const createButton = screen.getByText('create')
   await user.click(createButton)
 

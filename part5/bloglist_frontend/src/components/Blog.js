@@ -16,7 +16,7 @@ const Blog = ({ blog, handleLikes, handleRemove, user }) => {
       title: blog.title,
       author: blog.author,
       url: blog.url,
-      likes: (blog.likes + 1),
+      likes: blog.likes + 1,
       user: blog.user.id
     })
   }
@@ -32,9 +32,9 @@ const Blog = ({ blog, handleLikes, handleRemove, user }) => {
         <div>
           {blog.url}<br />
 likes {blog.likes}
-          <button onClick={handleLikeClick}>likes</button> <br />
+          <button onClick={handleLikeClick}>like</button> <br />
           {blog.author}<br />
-          {(blog.user.id === user.id || blog.user === user.id)
+          {(blog.user.id === user.id || blog.user=== user.id)
             ? <button onClick={handleRemoveClick}>remove</button>
             : null
           }
@@ -43,7 +43,7 @@ likes {blog.likes}
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={() => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
       {details()}

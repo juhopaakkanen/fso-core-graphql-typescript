@@ -8,7 +8,7 @@ const initialBlogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-    user: '627d3c5e921efb3d814bdfe0',
+    user: '628796b1c19118cd8c7082fc',
     __v: 0
   },
   {
@@ -17,7 +17,7 @@ const initialBlogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
-    user: '627d3c5e921efb3d814bdfe0',
+    user: '628796b1c19118cd8c7082fc',
     __v: 0
   }
 ]
