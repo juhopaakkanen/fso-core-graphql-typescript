@@ -1,1 +1,1 @@
-# Blog List App
+# Bloglist backend
