@@ -10,26 +10,18 @@ describe('unicafe reducer', () => {
 
   test('should return a proper initial state when called with undefined state', () => {
     const state = {}
-    const action = {
-      type: 'DO_NOTHING'
-    }
+    const action = { type: 'DO_NOTHING' }
 
     const newState = counterReducer(undefined, action)
     expect(newState).toEqual(initialState)
   })
 
   test('good is incremented', () => {
-    const action = {
-      type: 'GOOD'
-    }
+    const action = { type: 'GOOD' }
     const state = initialState
 
     deepFreeze(state)
     const newState = counterReducer(state, action)
-    expect(newState).toEqual({
-      good: 1,
-      ok: 0,
-      bad: 0
-    })
+    expect(newState).toEqual({ ...state, good: state.good + 1 })
   })
 })
