@@ -35,9 +35,7 @@ const useResource = (baseUrl) => {
     create
   }
 
-  return [
-    resources, service
-  ]
+  return [resources, service]
 }
 
 const App = () => {
