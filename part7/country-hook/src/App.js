@@ -25,6 +25,7 @@ const useCountry = (name) => {
         setCountry(response.data[0])
       })
       .catch(() => {
+        setCountry(null)
       })
   }, [name])
 
