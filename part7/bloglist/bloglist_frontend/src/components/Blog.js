@@ -1,6 +1,11 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, handleLikes, handleRemove, user }) => {
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch()
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,20 +15,32 @@ const Blog = ({ blog, handleLikes, handleRemove, user }) => {
   }
   const [visible, setVisible] = useState(false)
 
-  const handleLikeClick = (event) => {
-    event.preventDefault()
-    handleLikes(blog.id, {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-      user: blog.user.id
-    })
+  const handleLikeClick = () => {
+    try {
+      dispatch(
+        likeBlog(blog.id, {
+          title: blog.title,
+          author: blog.author,
+          url: blog.url,
+          likes: blog.likes + 1,
+          user: blog.user.id
+        })
+      )
+      dispatch(setNotification(`Liked ${blog.title}`))
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, true))
+    }
   }
 
-  const handleRemoveClick = (event) => {
-    event.preventDefault()
-    handleRemove(blog.id)
+  const handleRemoveClick = () => {
+    try {
+      if (window.confirm(`Delete ${blog.title} ${blog.author}?`)) {
+        dispatch(removeBlog(blog.id, user.token))
+        dispatch(setNotification(`Removed ${blog.title} ${blog.author}`))
+      }
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, true))
+    }
   }
 
   const details = () => {

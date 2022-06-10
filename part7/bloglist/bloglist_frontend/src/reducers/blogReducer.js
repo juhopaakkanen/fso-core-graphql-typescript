@@ -1,21 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
-import { setNotification } from './notificationReducer'
 
 const blogSlice = createSlice({
   name: 'blogs',
   initialState: [],
   reducers: {
+    incrementLikes(state, action) {
+      const id = action.payload
+      return state
+        .map((a) => (a.id !== id ? a : { ...a, likes: a.likes + 1 }))
+        .sort((a, b) => b.likes - a.likes)
+    },
     appendBlog(state, action) {
       state.push(action.payload)
     },
     setBlogs(_, action) {
-      return action.payload
+      return action.payload.sort((a, b) => b.likes - a.likes)
+    },
+    deleteBlog(state, action) {
+      const id = action.payload
+      return state.filter((blog) => blog.id !== id)
     }
   }
 })
 
-export const { appendBlog, setBlogs } = blogSlice.actions
+export const { incrementLikes, appendBlog, setBlogs, deleteBlog } =
+  blogSlice.actions
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
@@ -26,20 +36,27 @@ export const initializeBlogs = () => {
 
 export const createBlog = (blogObject) => {
   return async (dispatch) => {
-    try {
-      const loggedUserJSON = window.localStorage.getItem('loggedUser')
-      const user = JSON.parse(loggedUserJSON)
-      blogService.setToken(user.token)
-      const newBlog = await blogService.create(blogObject)
-      dispatch(appendBlog(newBlog))
-      dispatch(
-        setNotification(
-          `a new blog ${blogObject.title} by ${blogObject.author} added`
-        )
-      )
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, true))
-    }
+    //temp, fix after refactoring user to Redux
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    const user = JSON.parse(loggedUserJSON)
+    blogService.setToken(user.token)
+    const newBlog = await blogService.create(blogObject)
+    dispatch(appendBlog(newBlog))
+  }
+}
+
+export const likeBlog = (blogId, blogObject) => {
+  return async (dispatch) => {
+    await blogService.update(blogId, blogObject)
+    dispatch(incrementLikes(blogId))
+  }
+}
+
+export const removeBlog = (blogId, token) => {
+  return async (dispatch) => {
+    blogService.setToken(token)
+    await blogService.remove(blogId)
+    dispatch(deleteBlog(blogId))
   }
 }
 
