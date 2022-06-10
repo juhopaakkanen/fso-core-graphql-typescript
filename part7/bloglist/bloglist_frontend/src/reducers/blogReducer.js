@@ -34,12 +34,9 @@ export const initializeBlogs = () => {
   }
 }
 
-export const createBlog = (blogObject) => {
+export const createBlog = (token, blogObject) => {
   return async (dispatch) => {
-    //temp, fix after refactoring user to Redux
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    const user = JSON.parse(loggedUserJSON)
-    blogService.setToken(user.token)
+    blogService.setToken(token)
     const newBlog = await blogService.create(blogObject)
     dispatch(appendBlog(newBlog))
   }

@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useField } from '../hooks'
@@ -8,19 +8,22 @@ const BlogForm = () => {
   const { reset: resetAuthor, ...author } = useField('text')
   const { reset: resetUrl, ...url } = useField('text')
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.user.token)
 
   const addBlog = (event) => {
     event.preventDefault()
     try {
       dispatch(
-        createBlog({
+        createBlog(token, {
           title: title.value,
-          author: author,
-          url: url,
+          author: author.value,
+          url: url.value,
           likes: 0
         })
       )
-      dispatch(setNotification(`a new blog ${title.value} by ${author} added`))
+      dispatch(
+        setNotification(`a new blog ${title.value} by ${author.value} added`)
+      )
     } catch (error) {
       dispatch(setNotification(error.response.data.error, true))
     }

@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux'
-import { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
@@ -9,9 +9,10 @@ import BlogList from './components/BlogList'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUser, setUser } from './reducers/userReducer'
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const user = useSelector((state) => state.user)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
@@ -20,19 +21,15 @@ const App = () => {
   }, [dispatch])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-    }
-  }, [])
+    dispatch(initializeUser())
+  }, [dispatch])
 
   const login = async (credentials) => {
     try {
       const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      setUser(user)
+      dispatch(setUser(user))
       dispatch(setNotification(`${user.username} logged in`))
     } catch (error) {
       dispatch(setNotification(error.response.data.error, true))
@@ -42,7 +39,7 @@ const App = () => {
   const logout = () => {
     window.localStorage.removeItem('loggedUser')
     dispatch(setNotification(`${user.username} logged out`))
-    setUser(null)
+    dispatch(setUser(null))
   }
 
   const togglableBlogForm = () => (
@@ -64,7 +61,7 @@ const App = () => {
             <button onClick={logout}> logout</button>
           </p>
           {togglableBlogForm()}
-          <BlogList user={user} />
+          <BlogList />
         </div>
       )}
     </div>
