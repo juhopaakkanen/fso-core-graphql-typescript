@@ -17,15 +17,7 @@ const Blog = ({ blog, user }) => {
 
   const handleLikeClick = () => {
     try {
-      dispatch(
-        likeBlog(blog.id, {
-          title: blog.title,
-          author: blog.author,
-          url: blog.url,
-          likes: blog.likes + 1,
-          user: blog.user.id
-        })
-      )
+      dispatch(likeBlog(blog.id, { ...blog, user: blog.user.id }))
       dispatch(setNotification(`Liked ${blog.title}`))
     } catch (error) {
       dispatch(setNotification(error.response.data.error, true))
