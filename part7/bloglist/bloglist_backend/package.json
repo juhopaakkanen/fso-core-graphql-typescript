@@ -9,10 +9,12 @@
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "prettier": "npx prettier src test --check",
+    "prettier:fix": "npm run prettier -- --write",
+    "format": "npm run prettier:fix && npm run lint:fix",
     "start:test": "cross-env NODE_ENV=test node index.js",
     "git": "git add . && git commit -m",
     "postgit": "git push --all"
-
   },
   "author": "JP",
   "license": "ISC",
@@ -29,11 +31,19 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
     "jest": "^28.0.3",
     "nodemon": "^2.0.16",
+    "prettier": "2.6.2",
     "supertest": "^6.2.3"
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "none",
+    "endOfLine": "crlf"
   }
 }
