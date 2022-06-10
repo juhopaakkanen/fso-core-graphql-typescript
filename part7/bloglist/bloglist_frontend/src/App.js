@@ -5,9 +5,10 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
-import Blogs from './components/Blogs'
+import BlogList from './components/BlogList'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,12 +17,8 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchData = async () => {
-      const initialBlogs = await blogService.getAll()
-      setBlogs(initialBlogs.sort((a, b) => b.likes - a.likes))
-    }
-    fetchData()
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -49,19 +46,7 @@ const App = () => {
     setUser(null)
   }
 
-  const createBlog = async (blogObject) => {
-    try {
-      blogFormRef.current.toggleVisibility()
-      blogService.setToken(user.token)
-      const newBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(newBlog))
-      dispatch(setNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, true))
-    }
-  }
-
-  const removeBlog = async (blogId) => {
+  const removeBlog = async blogId => {
     try {
       const blog = blogs.find((blog) => blog.id === blogId)
       blogService.setToken(user.token)
@@ -91,7 +76,7 @@ const App = () => {
 
   const togglableBlogForm = () => (
     <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-      <BlogForm createBlog={createBlog} />
+      <BlogForm />
     </Togglable>
   )
 
@@ -108,8 +93,7 @@ const App = () => {
             <button onClick={logout}> logout</button>
           </p>
           {togglableBlogForm()}
-          <Blogs
-            blogs={blogs}
+          <BlogList
             handleLikes={updateLikes}
             handleRemove={removeBlog}
             user={user}
