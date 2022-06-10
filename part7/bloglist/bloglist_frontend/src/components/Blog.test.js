@@ -4,9 +4,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-
 test('renders blog correctly default', () => {
-  const blog =   {
+  const blog = {
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
@@ -21,12 +20,12 @@ test('renders blog correctly default', () => {
 })
 
 test('renders blog correctly view clicked', async () => {
-  const blog =   {
+  const blog = {
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-    user: '627d3c5e921efb3d814bdfe0',
+    user: '627d3c5e921efb3d814bdfe0'
   }
   const mockUser = { username: 'johndoe' }
   const { container } = render(<Blog blog={blog} user={mockUser} />)
@@ -40,12 +39,12 @@ test('renders blog correctly view clicked', async () => {
 })
 
 test('clicking the like button twice calls event handler twice', async () => {
-  const blog =   {
+  const blog = {
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-    user: '627d3c5e921efb3d814bdfe0',
+    user: '627d3c5e921efb3d814bdfe0'
   }
   const mockUser = { username: 'johndoe' }
   const mockHandler = jest.fn()

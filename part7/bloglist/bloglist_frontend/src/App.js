@@ -60,11 +60,11 @@ const App = () => {
 
   const removeBlog = async (blogId) => {
     try {
-      const blog = blogs.find(blog => blog.id === blogId)
+      const blog = blogs.find((blog) => blog.id === blogId)
       blogService.setToken(user.token)
       if (window.confirm(`Delete ${blog.title} ${blog.author}?`)) {
         await blogService.remove(blogId)
-        setBlogs(blogs.filter(blog => blog.id !== blogId))
+        setBlogs(blogs.filter((blog) => blog.id !== blogId))
         notificate(`Removed ${blog.title} ${blog.author}`)
       }
     } catch (error) {
@@ -75,9 +75,11 @@ const App = () => {
   const updateLikes = async (blogId, blogObject) => {
     try {
       const updatedBlog = await blogService.update(blogId, blogObject)
-      setBlogs(blogs
-        .map(blog => blog.id !== blogId ? blog : updatedBlog)
-        .sort((a, b) => b.likes - a.likes))
+      setBlogs(
+        blogs
+          .map((blog) => (blog.id !== blogId ? blog : updatedBlog))
+          .sort((a, b) => b.likes - a.likes)
+      )
       notificate(`Liked ${updatedBlog.title}`)
     } catch (error) {
       notificate(error.response.data.error, true)
@@ -92,7 +94,7 @@ const App = () => {
   }
 
   const togglableBlogForm = () => (
-    <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+    <Togglable buttonLabel="create new blog" ref={blogFormRef}>
       <BlogForm createBlog={createBlog} />
     </Togglable>
   )
@@ -101,8 +103,9 @@ const App = () => {
     <div>
       <h1>Bloglist app</h1>
       <Notification notification={notification} />
-      {user === null ?
-        <LoginForm login={login} /> :
+      {user === null ? (
+        <LoginForm login={login} />
+      ) : (
         <div>
           <p>
             {user.name} logged in
@@ -116,7 +119,7 @@ const App = () => {
             user={user}
           />
         </div>
-      }
+      )}
     </div>
   )
 }
