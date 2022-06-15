@@ -5,9 +5,11 @@ import LoginForm from './components/LoginForm'
 import Logout from './components/Logout'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
+import UserList from './components/UserList'
 import Togglable from './components/Togglable'
 import { initializeBlogs } from './reducers/blogReducer'
 import { maintainAuthentication } from './reducers/authenticationReducer'
+import { initializeUsers } from './reducers/userReducer'
 
 const App = () => {
   const user = useSelector((state) => state.user)
@@ -16,6 +18,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUsers())
   }, [dispatch])
 
   useEffect(() => {
@@ -37,6 +43,7 @@ const App = () => {
       ) : (
         <div>
           <Logout />
+          <UserList />
           {togglableBlogForm()}
           <BlogList />
         </div>
