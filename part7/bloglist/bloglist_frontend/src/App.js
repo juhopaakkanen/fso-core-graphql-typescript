@@ -1,19 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
 import Logout from './components/Logout'
-import BlogForm from './components/BlogForm'
-import BlogList from './components/BlogList'
-import UserList from './components/UserList'
-import Togglable from './components/Togglable'
+import Blog from './components/Blog'
+import User from './components/User'
+import LoginForm from './components/LoginForm'
+import BlogsView from './components/BlogsView'
+import UsersView from './components/UsersView'
+import RootView from './components/RootView'
 import { initializeBlogs } from './reducers/blogReducer'
 import { maintainAuthentication } from './reducers/authenticationReducer'
 import { initializeUsers } from './reducers/userReducer'
+import { Routes, Route, Link, Navigate } from 'react-router-dom'
 
 const App = () => {
   const user = useSelector((state) => state.user)
-  const blogFormRef = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -28,26 +29,48 @@ const App = () => {
     dispatch(maintainAuthentication())
   }, [dispatch])
 
-  const togglableBlogForm = () => (
-    <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-      <BlogForm />
-    </Togglable>
-  )
+  const padding = {
+    paddingRight: 5
+  }
 
   return (
     <div>
-      <h1>Bloglist app</h1>
-      <Notification />
-      {user === null ? (
-        <LoginForm />
+      <Link style={padding} to="/blogs">
+        blogs
+      </Link>
+      <Link style={padding} to="/users">
+        users
+      </Link>
+      {user ? (
+        <Logout />
       ) : (
-        <div>
-          <Logout />
-          <UserList />
-          {togglableBlogForm()}
-          <BlogList />
-        </div>
+        <Link style={padding} to="/login">
+          login
+        </Link>
       )}
+
+      <h2>Bloglist app</h2>
+      <Notification />
+
+      <div>
+        <Routes>
+          <Route path="/users/:id" element={<User />} />
+          <Route
+            path="users"
+            element={user ? <UsersView /> : <Navigate replace to="/login" />}
+          />
+          <Route path="/blogs/:id" element={<Blog />} />
+          <Route
+            path="/login"
+            element={!user ? <LoginForm /> : <Navigate replace to="/blogs" />}
+          />
+          <Route
+            path="/blogs"
+            element={user ? <BlogsView /> : <Navigate replace to="/login" />}
+          />
+          <Route path="/" element={<RootView />} />
+        </Routes>
+      </div>
     </div>
   )
 }

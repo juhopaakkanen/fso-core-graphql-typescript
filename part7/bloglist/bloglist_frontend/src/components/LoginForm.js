@@ -2,8 +2,10 @@ import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/authenticationReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useField } from '../hooks'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
+  const navigate = useNavigate()
   const { reset: resetUsername, ...username } = useField('text')
   const { reset: resetPassword, ...password } = useField('password')
   const dispatch = useDispatch()
@@ -20,6 +22,7 @@ const LoginForm = () => {
     }
     resetUsername()
     resetPassword()
+    navigate('/blogs')
   }
 
   return (
