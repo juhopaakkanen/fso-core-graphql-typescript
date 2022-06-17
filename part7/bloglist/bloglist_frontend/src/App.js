@@ -34,7 +34,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <Link style={padding} to="/blogs">
         blogs
       </Link>

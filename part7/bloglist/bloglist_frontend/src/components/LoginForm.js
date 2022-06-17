@@ -1,8 +1,8 @@
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/authenticationReducer'
-import { setNotification } from '../reducers/notificationReducer'
 import { useField } from '../hooks'
 import { useNavigate } from 'react-router-dom'
+import { Button, Form } from 'react-bootstrap'
 
 const LoginForm = () => {
   const navigate = useNavigate()
@@ -12,14 +12,7 @@ const LoginForm = () => {
 
   const handleLogin = (event) => {
     event.preventDefault()
-    try {
-      dispatch(
-        loginUser({ username: username.value, password: password.value })
-      )
-      dispatch(setNotification(`${username.value} logged in`))
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, true))
-    }
+    dispatch(loginUser({ username: username.value, password: password.value }))
     resetUsername()
     resetPassword()
     navigate('/blogs')
@@ -27,20 +20,18 @@ const LoginForm = () => {
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input id="username" {...username} />
-        </div>
-        <div>
-          password
-          <input id="password" {...password} />
-        </div>
-        <button id="login-button" type="submit">
-          login
-        </button>
-      </form>
+      <h2>login</h2>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control id="username" {...username} />
+          <Form.Label>password:</Form.Label>
+          <Form.Control id="password" {...password} />
+          <Button id="login-button" variant="primary" type="submit">
+            login
+          </Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }
