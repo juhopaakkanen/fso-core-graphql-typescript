@@ -41,6 +41,11 @@ const App = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">
+                about
+              </Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
               <Link style={padding} to="/blogs">
                 blogs
               </Link>
@@ -58,7 +63,6 @@ const App = () => {
       </Navbar>
 
       <Notification />
-
       <div>
         <Routes>
           <Route path="/users/:id" element={<User />} />
