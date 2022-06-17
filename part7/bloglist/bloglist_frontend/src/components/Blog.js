@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useParams } from 'react-router-dom'
+import CommentForm from './CommentForm'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ const Blog = () => {
         <button onClick={handleRemoveClick}>remove</button>
       ) : null}
       <h3>comments</h3>
+      <CommentForm />
       <ul>
         {blog.comments.map((comment, index) => (
           <li key={index}>{comment}</li>
