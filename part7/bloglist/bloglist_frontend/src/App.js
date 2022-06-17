@@ -12,6 +12,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { maintainAuthentication } from './reducers/authenticationReducer'
 import { initializeUsers } from './reducers/userReducer'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
+import { Navbar, Nav } from 'react-bootstrap'
 
 const App = () => {
   const user = useSelector((state) => state.user)
@@ -35,21 +36,27 @@ const App = () => {
 
   return (
     <div className="container">
-      <Link style={padding} to="/blogs">
-        blogs
-      </Link>
-      <Link style={padding} to="/users">
-        users
-      </Link>
-      {user ? (
-        <Logout />
-      ) : (
-        <Link style={padding} to="/login">
-          login
-        </Link>
-      )}
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/blogs">
+                blogs
+              </Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">
+                users
+              </Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              {user ? <Logout /> : <Link to="/login">login</Link>}
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
 
-      <h2>Bloglist app</h2>
       <Notification />
 
       <div>
