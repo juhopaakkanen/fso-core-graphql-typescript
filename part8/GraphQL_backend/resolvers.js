@@ -6,16 +6,17 @@ const resolvers = {
     authorCount: () => authors.length,
     bookCount: () => books.length,
     allBooks: (root, args) => {
-      if (!args.author && !args.genre) {
+      const { author, genre } = args
+      if (!author && !genre) {
         return books
-      } else if (args.author && args.genre) {
+      } else if (author && genre) {
         return books
-          .filter((book) => book.author === args.author)
-          .filter((book) => book.genres.includes(args.genre))
-      } else if (args.author) {
-        return books.filter((book) => book.author === args.author)
+          .filter((b) => b.author === author)
+          .filter((b) => b.genres.includes(genre))
+      } else if (author) {
+        return books.filter((b) => b.author === author)
       } else {
-        return books.filter((book) => book.genres.includes(args.genre))
+        return books.filter((b) => b.genres.includes(genre))
       }
     },
     allAuthors: () => authors
