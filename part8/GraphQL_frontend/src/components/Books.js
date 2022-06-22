@@ -1,5 +1,5 @@
-import { ALL_BOOKS } from '../queries'
 import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from '../queries'
 
 const Books = (props) => {
   if (!props.show) {
