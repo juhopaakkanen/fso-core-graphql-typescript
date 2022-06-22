@@ -22,8 +22,7 @@ const resolvers = {
     allAuthors: () => authors
   },
   Author: {
-    bookCount: (root) =>
-      books.filter((book) => book.author === root.name).length
+    bookCount: (root) => books.filter((b) => b.author === root.name).length
   },
   Mutation: {
     addBook: (root, args) => {
