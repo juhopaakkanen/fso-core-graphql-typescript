@@ -2,13 +2,25 @@ import { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Notification from './components/Notification'
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [errorMessage, setErrorMessage] = useState(null)
+  let timeoutID = null
+
+  const notify = (message) => {
+    clearTimeout(timeoutID)
+    setErrorMessage(message)
+    timeoutID = setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
 
   return (
     <div>
       <div>
+        <Notification errorMessage={errorMessage} />
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
@@ -16,7 +28,7 @@ const App = () => {
 
       <Authors show={page === 'authors'} />
       <Books show={page === 'books'} />
-      <NewBook show={page === 'add'} />
+      <NewBook show={page === 'add'} setError={notify} />
     </div>
   )
 }
