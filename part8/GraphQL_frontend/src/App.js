@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
-import NewBook from './components/NewBook'
+import BookForm from './components/BookForm'
 import Notification from './components/Notification'
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
 
       <Authors show={page === 'authors'} />
       <Books show={page === 'books'} />
-      <NewBook show={page === 'add'} setError={notify} />
+      <BookForm show={page === 'add'} setError={notify} />
     </div>
   )
 }

@@ -1,8 +1,9 @@
 import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS } from '../queries'
+import BornForm from './BornForm'
 
-const Authors = (props) => {
-  if (!props.show) {
+const Authors = ({ show }) => {
+  if (!show) {
     return null
   }
 
@@ -31,6 +32,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <BornForm />
     </div>
   )
 }

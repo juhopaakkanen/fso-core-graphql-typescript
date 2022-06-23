@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 import { useMutation } from '@apollo/client'
 
-const NewBook = ({ show, setError }) => {
+const BookForm = ({ show, setError }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -79,4 +79,4 @@ const NewBook = ({ show, setError }) => {
   )
 }
 
-export default NewBook
+export default BookForm
