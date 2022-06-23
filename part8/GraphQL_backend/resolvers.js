@@ -1,6 +1,9 @@
-const { UserInputError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const Book = require('./models/Book')
 const Author = require('./models/Author')
+const User = require('./models/User')
+const jwt = require('jsonwebtoken')
+const config = require('./utils/config')
 
 const resolvers = {
   Query: {
@@ -22,6 +25,9 @@ const resolvers = {
       } else {
         return Book.find({ genres: { $in: genre } }).populate('author')
       }
+    },
+    me: (root, args, context) => {
+      return context.currentUser
     }
   },
   Author: {
@@ -31,7 +37,11 @@ const resolvers = {
     }
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('Not authenticated !')
+      }
       let author = await Author.findOne({ name: args.author })
       let book
       try {
@@ -51,13 +61,42 @@ const resolvers = {
       }
       return book
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('Not authenticated !')
+      }
       const editedAuthor = await Author.findOneAndUpdate(
         { name: args.name },
         { $set: { born: args.setBornTo } },
         { new: true }
       )
       return editedAuthor
+    },
+    createUser: async (root, args) => {
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre
+      })
+
+      return user.save().catch((error) => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      })
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+      if (!user || args.password !== config.PASSWORD) {
+        throw new UserInputError('wrong credentials')
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id
+      }
+
+      return { value: jwt.sign(userForToken, config.JWT_SECRET) }
     }
   }
 }
