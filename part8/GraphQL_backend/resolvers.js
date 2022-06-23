@@ -1,5 +1,6 @@
 const { v1: uuid } = require('uuid')
 let { authors, books } = require('./data')
+const { UserInputError } = require('apollo-server')
 
 const resolvers = {
   Query: {
@@ -27,6 +28,11 @@ const resolvers = {
   Mutation: {
     addBook: (root, args) => {
       const book = { ...args, id: uuid() }
+      if (books.find((b) => b.title === args.title)) {
+        throw new UserInputError('Name must be unique', {
+          invalidArgs: args.title
+        })
+      }
       books = books.concat(book)
       if (!authors.find((a) => a.name === args.author)) {
         const author = { name: args.author, id: uuid() }
