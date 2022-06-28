@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
+import Recommendations from './components/Recommendations'
 import BookForm from './components/BookForm'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -25,6 +26,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    setPage('login')
   }
 
   return (
@@ -36,6 +38,7 @@ const App = () => {
         {token ? (
           <>
             <button onClick={() => setPage('add')}>add book</button>
+            <button onClick={() => setPage('recommend')}>recommend</button>
             <button onClick={logout}>logout</button>
           </>
         ) : (
@@ -45,11 +48,13 @@ const App = () => {
 
       <Authors show={page === 'authors'} token={token} />
       <Books show={page === 'books'} />
+      <Recommendations show={page === 'recommend'} />
       <BookForm show={page === 'add'} setError={notify} />
       <LoginForm
         show={page === 'login'}
         setError={notify}
         setToken={setToken}
+        setPage={setPage}
       />
     </div>
   )

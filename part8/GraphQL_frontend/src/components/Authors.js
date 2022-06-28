@@ -7,9 +7,9 @@ const Authors = ({ show, token }) => {
     return null
   }
 
-  const result = useQuery(ALL_AUTHORS)
+  const { data, loading } = useQuery(ALL_AUTHORS)
 
-  if (result.loading) {
+  if (loading) {
     return <div>loading...</div>
   }
 
@@ -23,7 +23,7 @@ const Authors = ({ show, token }) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {result.data.allAuthors.map((a) => (
+          {data.allAuthors.map((a) => (
             <tr key={a.name}>
               <td>{a.name}</td>
               <td>{a.born}</td>

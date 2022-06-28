@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
 
-const LoginForm = ({ show, setError, setToken }) => {
+const LoginForm = ({ show, setError, setToken, setPage }) => {
   if (!show) {
     return null
   }
@@ -21,6 +21,7 @@ const LoginForm = ({ show, setError, setToken }) => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('user-token', token)
+      setPage('authors')
     }
   }, [result.data])
 
