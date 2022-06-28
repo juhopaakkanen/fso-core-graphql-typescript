@@ -26,8 +26,14 @@ const resolvers = {
         return Book.find({ genres: { $in: genre } }).populate('author')
       }
     },
-    me: (_root, _args, context) => {
+    me: async (_root, _args, context) => {
       return context.currentUser
+    },
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genres = books.map((b) => (b = b.genres))
+      const flattenedGenres = [].concat.apply([], genres)
+      return [...new Set(flattenedGenres)]
     }
   },
   Author: {
