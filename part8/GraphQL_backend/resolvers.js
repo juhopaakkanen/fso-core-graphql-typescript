@@ -10,23 +10,23 @@ const resolvers = {
     authorCount: async () => Author.collection.countDocuments(),
     bookCount: async () => Book.collection.countDocuments(),
     allAuthors: async () => Author.find({}),
-    allBooks: async (root, args) => {
+    allBooks: async (_root, args) => {
       const { author, genre } = args
       if (!author && !genre) {
         return Book.find({}).populate('author')
       } else if (author && genre) {
         const a = await Author.findOne({ name: author })
-        return Book.find({ author: a._id })
+        return Book.find({ author: a.id })
           .find({ genres: { $in: genre } })
           .populate('author')
       } else if (author) {
         const a = await Author.findOne({ name: author })
-        return Book.find({ author: a._id }).populate('author')
+        return Book.find({ author: a.id }).populate('author')
       } else {
         return Book.find({ genres: { $in: genre } }).populate('author')
       }
     },
-    me: (root, args, context) => {
+    me: (_root, _args, context) => {
       return context.currentUser
     }
   },
@@ -37,14 +37,15 @@ const resolvers = {
     }
   },
   Mutation: {
-    addBook: async (root, args, context) => {
+    addBook: async (_root, args, context) => {
       const currentUser = context.currentUser
       if (!currentUser) {
         throw new AuthenticationError('Not authenticated !')
       }
-      let author = await Author.findOne({ name: args.author })
+
       let book
       try {
+        let author = await Author.findOne({ name: args.author })
         if (!author) {
           author = new Author({
             name: args.author,
@@ -61,7 +62,7 @@ const resolvers = {
       }
       return book
     },
-    editAuthor: async (root, args, context) => {
+    editAuthor: async (_root, args, context) => {
       const currentUser = context.currentUser
       if (!currentUser) {
         throw new AuthenticationError('Not authenticated !')
@@ -73,7 +74,7 @@ const resolvers = {
       )
       return editedAuthor
     },
-    createUser: async (root, args) => {
+    createUser: async (_root, args) => {
       const user = new User({
         username: args.username,
         favoriteGenre: args.favoriteGenre
@@ -93,7 +94,7 @@ const resolvers = {
 
       const userForToken = {
         username: user.username,
-        id: user._id
+        id: user.id
       }
 
       return { value: jwt.sign(userForToken, config.JWT_SECRET) }
