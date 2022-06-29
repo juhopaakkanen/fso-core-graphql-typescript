@@ -38,12 +38,6 @@ const resolvers = {
       return [...new Set(flattenedGenres)]
     }
   },
-  Author: {
-    bookCount: async (root) => {
-      const authorBooks = await Book.find({ author: root.id })
-      return authorBooks.length
-    }
-  },
   Mutation: {
     addBook: async (_root, args, context) => {
       const currentUser = context.currentUser
@@ -57,10 +51,19 @@ const resolvers = {
         if (!author) {
           author = new Author({
             name: args.author,
-            born: null
+            born: null,
+            bookCount: 1
           })
           await author.save()
+        } else {
+          const authorBooks = await Book.find({ author: author.id })
+          const bookCount = authorBooks.length + 1
+          await Author.findOneAndUpdate(
+            { name: author.name },
+            { $set: { bookCount: bookCount } }
+          )
         }
+
         book = new Book({ ...args, author: author })
         await book.save()
       } catch (error) {
