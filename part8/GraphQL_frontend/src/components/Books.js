@@ -20,7 +20,7 @@ const Books = ({ show }) => {
     return <div>loading...</div>
   }
 
-  let genres = genreData.allGenres
+  let genres = genreData?.allGenres
   genres = genres.concat('all genres')
 
   const booksData = genre === 'all genres' ? allBooksData : booksByGenreData

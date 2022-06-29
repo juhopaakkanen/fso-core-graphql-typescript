@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import Recommendations from './components/Recommendations'
@@ -15,6 +15,13 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
   let timeoutID = null
+
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem('user-token')
+    if (loggedUser) {
+      setToken(loggedUser)
+    }
+  }, [])
 
   const notify = (message) => {
     clearTimeout(timeoutID)
@@ -34,7 +41,7 @@ const App = () => {
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       const addedBook = subscriptionData.data.bookAdded
-      notify(`${addedBook.title} added`)
+      window.alert(`${addedBook.title} added`)
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
     }
   })
