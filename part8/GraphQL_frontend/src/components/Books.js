@@ -1,6 +1,15 @@
 import { useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { ALL_BOOKS, ALL_GENRES, ALL_BOOKS_BY_GENRE } from '../queries'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Button
+} from '@mui/material'
 
 const Books = ({ show }) => {
   if (!show) {
@@ -35,27 +44,36 @@ const Books = ({ show }) => {
       ) : (
         <p>listing all books</p>
       )}
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {booksData?.allBooks.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <b>title</b>
+              </TableCell>
+              <TableCell>
+                <b>author</b>
+              </TableCell>
+              <TableCell>
+                <b>published</b>
+              </TableCell>
+            </TableRow>
+            {booksData?.allBooks.map((a) => (
+              <TableRow key={a.title}>
+                <TableCell>{a.title}</TableCell>
+                <TableCell>{a.author.name}</TableCell>
+                <TableCell>{a.published}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <br />
+      Filter by genre:
       {genres.map((g) => (
-        <button key={g} onClick={() => setGenre(g)}>
+        <Button key={g} onClick={() => setGenre(g)}>
           {g}
-        </button>
+        </Button>
       ))}
     </div>
   )

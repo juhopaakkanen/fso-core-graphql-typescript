@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
+import { Button, TextField } from '@mui/material'
 
 const LoginForm = ({ show, setError, setToken, setPage }) => {
   if (!show) {
@@ -34,21 +35,24 @@ const LoginForm = ({ show, setError, setToken, setPage }) => {
     <div>
       <form onSubmit={submit}>
         <div>
-          username{' '}
-          <input
+          <h2>login:</h2>
+          <TextField
+            label="username"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
-          password{' '}
-          <input
+          <TextField
+            label="password"
             type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <Button variant="contained" color="primary" type="submit">
+          login
+        </Button>
       </form>
     </div>
   )

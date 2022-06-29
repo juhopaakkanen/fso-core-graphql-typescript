@@ -7,6 +7,7 @@ import {
   ALL_BOOKS_BY_GENRE
 } from '../queries'
 import { useMutation } from '@apollo/client'
+import { Button, TextField } from '@mui/material'
 
 const BookForm = ({ show, setError }) => {
   const [title, setTitle] = useState('')
@@ -59,40 +60,45 @@ const BookForm = ({ show, setError }) => {
 
   return (
     <div>
+      <h2>add a book:</h2>
       <form onSubmit={submit}>
         <div>
-          title
-          <input
+          <TextField
+            label="title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
-          author
-          <input
+          <TextField
+            label="author"
             value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
-          published
-          <input
+          <TextField
+            label="published"
             type="number"
             value={published}
             onChange={({ target }) => setPublished(target.value)}
           />
         </div>
         <div>
-          <input
+          <TextField
+            label="genre"
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type="button">
+          <Button onClick={addGenre} type="button">
             add genre
-          </button>
+          </Button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
-        <button type="submit">create book</button>
+        <p>genres: {genres.join(', ')}</p>
+        <br />
+        <Button variant="contained" color="primary" type="submit">
+          create book
+        </Button>
       </form>
     </div>
   )

@@ -1,6 +1,14 @@
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS_BY_GENRE } from '../queries'
 import { FAVORITE_GENRE } from '../queries'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper
+} from '@mui/material'
 
 const Recommendations = ({ show }) => {
   if (!show) {
@@ -18,22 +26,30 @@ const Recommendations = ({ show }) => {
       <p>
         books in your favorite genre <b>{favoriteGenre}</b>
       </p>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {data?.allBooks.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <b>title</b>
+              </TableCell>
+              <TableCell>
+                <b>author</b>
+              </TableCell>
+              <TableCell>
+                <b>published</b>
+              </TableCell>
+            </TableRow>
+            {data?.allBooks.map((a) => (
+              <TableRow key={a.title}>
+                <TableCell>{a.title}</TableCell>
+                <TableCell>{a.author.name}</TableCell>
+                <TableCell>{a.published}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }

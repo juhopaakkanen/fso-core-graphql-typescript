@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom'
 import App from './App'
+import { Container } from '@mui/material'
 
 import {
   ApolloClient,
@@ -50,8 +51,10 @@ const client = new ApolloClient({
 })
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
+  <Container>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </Container>,
   document.getElementById('root')
 )

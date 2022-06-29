@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { EDIT_BORN } from '../queries'
 import { ALL_AUTHORS } from '../queries'
 import { useQuery } from '@apollo/client'
+import { Button, TextField } from '@mui/material'
 
 const BornForm = () => {
   const names = useQuery(ALL_AUTHORS).data.allAuthors.map((a) => ({
@@ -30,20 +31,24 @@ const BornForm = () => {
 
   return (
     <div>
-      <h2>Set birthyear</h2>
+      <h2>set birthyear:</h2>
       <form onSubmit={submit}>
         <div>
           <Select defaultValue={name} onChange={setName} options={names} />
         </div>
         <div>
-          born
-          <input
+          <br />
+          <br />
+          <TextField
+            label="born"
             type="number"
             value={born}
             onChange={({ target }) => setBorn(target.value)}
           />
         </div>
-        <button type="submit">update author</button>
+        <Button variant="contained" color="primary" type="submit">
+          update author
+        </Button>
       </form>
     </div>
   )

@@ -8,6 +8,7 @@ import LoginForm from './components/LoginForm'
 import { BOOK_ADDED, ALL_BOOKS } from './queries'
 import { useSubscription, useApolloClient } from '@apollo/client'
 import { updateCache } from './utils/updateCache'
+import { AppBar, Toolbar, Button } from '@mui/material'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -49,18 +50,34 @@ const App = () => {
   return (
     <div>
       <div>
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" onClick={() => setPage('authors')}>
+              authors
+            </Button>
+            <Button color="inherit" onClick={() => setPage('books')}>
+              books
+            </Button>
+            {token ? (
+              <>
+                <Button color="inherit" onClick={() => setPage('add')}>
+                  add book
+                </Button>
+                <Button color="inherit" onClick={() => setPage('recommend')}>
+                  recommend
+                </Button>
+                <Button color="inherit" onClick={logout}>
+                  logout
+                </Button>
+              </>
+            ) : (
+              <Button color="inherit" onClick={() => setPage('login')}>
+                login
+              </Button>
+            )}
+          </Toolbar>
+        </AppBar>
         <Notification errorMessage={errorMessage} />
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        {token ? (
-          <>
-            <button onClick={() => setPage('add')}>add book</button>
-            <button onClick={() => setPage('recommend')}>recommend</button>
-            <button onClick={logout}>logout</button>
-          </>
-        ) : (
-          <button onClick={() => setPage('login')}>login</button>
-        )}
       </div>
 
       <Authors show={page === 'authors'} token={token} />
