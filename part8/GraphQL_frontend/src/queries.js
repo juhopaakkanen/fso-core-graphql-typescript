@@ -61,6 +61,18 @@ export const CREATE_BOOK = gql`
     }
   }
 `
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      published
+      author {
+        name
+      }
+      genres
+    }
+  }
+`
 
 export const EDIT_BORN = gql`
   mutation editBorn($name: String!, $setBornTo: Int!) {
