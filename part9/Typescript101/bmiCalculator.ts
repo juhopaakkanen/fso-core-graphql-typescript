@@ -3,7 +3,7 @@ interface personData {
   weight: number;
 }
 
-const parseArguments = (args: Array<string>): personData => {
+const parseArgumentsBMI = (args: Array<string>): personData => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 
@@ -17,16 +17,11 @@ const parseArguments = (args: Array<string>): personData => {
   }
 };
 
-const parseQueryParameters = (height: any, weight: any): personData => {
+const typecheckQueryParameters = (height: unknown, weight: unknown) => {
   if (!height || !weight) {
-    throw new Error('malformatted parameters: missing weight or height');
+    throw new Error('parameters missing');
   } else if (isNaN(Number(height)) || isNaN(Number(weight))) {
-    throw new Error('malformatted parameters: not numbers');
-  } else {
-    return {
-      height: Number(height),
-      weight: Number(weight)
-    };
+    throw new Error('malformatted parameters');
   }
 };
 
@@ -45,7 +40,7 @@ const calculateBmi = (height: number, weight: number): String => {
 };
 
 try {
-  const { height, weight } = parseArguments(process.argv);
+  const { height, weight } = parseArgumentsBMI(process.argv);
   console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong.';
@@ -55,4 +50,4 @@ try {
   console.log(errorMessage);
 }
 
-export { calculateBmi, parseQueryParameters };
+export { calculateBmi, typecheckQueryParameters };

@@ -13,7 +13,26 @@ interface inputData {
   trainingHours: Array<number>;
 }
 
-const parseArguments2 = (args: Array<string>): inputData => {
+const typecheckJSONParameters = (target: unknown, daily_exercises: unknown) => {
+  if (!target || !daily_exercises) {
+    throw new Error('parameters missing');
+  }
+
+  if (
+    isNaN(Number(target)) ||
+    !(daily_exercises instanceof Array<number>) ||
+    daily_exercises.length === 0
+  ) {
+    throw new Error('malformatted parameters');
+  }
+  for (let i = 0; i < daily_exercises.length; i++) {
+    if (isNaN(Number(daily_exercises[i]))) {
+      throw new Error('malformatted parameters');
+    }
+  }
+};
+
+const parseArgumentsExercises = (args: Array<string>): inputData => {
   if (args.length < 4) throw new Error('Not enough arguments');
 
   let valid: boolean = true;
@@ -69,7 +88,7 @@ const calculateExercises = (
 };
 
 try {
-  const { dailyTarget, trainingHours } = parseArguments2(process.argv);
+  const { dailyTarget, trainingHours } = parseArgumentsExercises(process.argv);
   console.log(calculateExercises(dailyTarget, trainingHours));
 } catch (error: unknown) {
   let errorMessage = 'Something went wrong.';
@@ -78,3 +97,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export { calculateExercises, typecheckJSONParameters };
