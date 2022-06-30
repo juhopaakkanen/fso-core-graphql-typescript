@@ -17,6 +17,19 @@ const parseArguments = (args: Array<string>): personData => {
   }
 };
 
+const parseQueryParameters = (height: any, weight: any): personData => {
+  if (!height || !weight) {
+    throw new Error('malformatted parameters: missing weight or height');
+  } else if (isNaN(Number(height)) || isNaN(Number(weight))) {
+    throw new Error('malformatted parameters: not numbers');
+  } else {
+    return {
+      height: Number(height),
+      weight: Number(weight)
+    };
+  }
+};
+
 const calculateBmi = (height: number, weight: number): String => {
   const BMI: number = weight / Math.pow(height / 100, 2);
   switch (true) {
@@ -41,3 +54,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export { calculateBmi, parseQueryParameters };
