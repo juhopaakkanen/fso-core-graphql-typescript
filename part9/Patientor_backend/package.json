@@ -8,7 +8,8 @@
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts .",
     "git": "git add . && git commit -m",
-    "postgit": "git push --all"
+    "postgit": "git push --all",
+	  "start": "node build/index.js"
   },
   "author": "",
   "license": "ISC",
