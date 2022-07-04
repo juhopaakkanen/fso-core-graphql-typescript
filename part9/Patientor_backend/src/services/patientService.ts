@@ -1,8 +1,8 @@
-import patientData from '../../data/patients.json';
-import { Patient, NonSensitivePatient } from '../types';
+import patientData from '../../data/patients';
+import { NewPatient, Patient, NonSensitivePatient } from '../types';
 import { v4 as uuid } from 'uuid';
 
-const patients: Array<Patient> = patientData as Array<Patient>;
+const patients: Array<Patient> = patientData;
 
 const getAllNonSensitive = (): Array<NonSensitivePatient> => {
   return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
@@ -14,13 +14,12 @@ const getAllNonSensitive = (): Array<NonSensitivePatient> => {
   }));
 };
 
-const addPatient = (patient: Patient): Patient => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  const id: string = uuid() as string;
-  const newPatient: Patient = { ...patient, id: id };
+const addPatient = (newPatient: NewPatient): Patient => {
+  const id: string = uuid();
+  const Patient: Patient = { id: id, ...newPatient };
 
-  patients.push(newPatient);
-  return newPatient;
+  patients.push(Patient);
+  return Patient;
 };
 
 export default { getAllNonSensitive, addPatient };
