@@ -5,9 +5,10 @@ import { useStateValue, updatePatient } from "../state";
 import { useParams } from "react-router-dom";
 import { Patient } from "../types";
 import { Female, Male, Transgender } from "@mui/icons-material";
+import EntryDetails from "../components/EntryDetails";
 
 const PatientPage = () => {
-  const [{ patients, diagnoses }, dispatch] = useStateValue();
+  const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
 
   if (!id) {
@@ -37,18 +38,18 @@ const PatientPage = () => {
     ? (JSON.parse(localStoragePatient) as Patient)
     : patients[id];
 
-  if (!patient || !diagnoses) {
+  if (!patient) {
     return <p>loading info..</p>;
   }
 
   const genderIcon = () => {
     switch (patient.gender) {
       case "male":
-        return <Male></Male>;
+        return <Male />;
       case "female":
-        return <Female></Female>;
+        return <Female />;
       case "other":
-        return <Transgender></Transgender>;
+        return <Transgender />;
       default:
         throw new Error("gender not valid");
     }
@@ -67,14 +68,7 @@ const PatientPage = () => {
       <h3>entries</h3>
       {patient.entries?.map((entry) => (
         <div key={entry.id}>
-          {entry.date} {entry.description}
-          <ul>
-            {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>
-                {code} {diagnoses[code]?.name}
-              </li>
-            ))}
-          </ul>
+          <EntryDetails entry={entry} />
         </div>
       ))}
     </div>
