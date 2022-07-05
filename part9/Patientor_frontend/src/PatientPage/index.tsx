@@ -7,7 +7,7 @@ import { Patient } from "../types";
 import { Female, Male, Transgender } from "@mui/icons-material";
 
 const PatientPage = () => {
-  const [{ patients }, dispatch] = useStateValue();
+  const [{ patients, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
 
   if (!id) {
@@ -37,8 +37,8 @@ const PatientPage = () => {
     ? (JSON.parse(localStoragePatient) as Patient)
     : patients[id];
 
-  if (!patient) {
-    return <p>loading patient info..</p>;
+  if (!patient || !diagnoses) {
+    return <p>loading info..</p>;
   }
 
   const genderIcon = () => {
@@ -70,7 +70,9 @@ const PatientPage = () => {
           {entry.date} {entry.description}
           <ul>
             {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>{code}</li>
+              <li key={code}>
+                {code} {diagnoses[code]?.name}
+              </li>
             ))}
           </ul>
         </div>
