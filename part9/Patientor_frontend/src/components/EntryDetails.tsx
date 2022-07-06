@@ -31,7 +31,7 @@ const HospitalElement = ({ entry }: { entry: HospitalEntry }) => {
   );
 };
 
-const OccupationalElement = ({
+const OccupationalHealthcareElement = ({
   entry,
 }: {
   entry: OccupationalHealthcareEntry;
@@ -64,7 +64,7 @@ const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
     case "Hospital":
       return <HospitalElement entry={entry} />;
     case "OccupationalHealthcare":
-      return <OccupationalElement entry={entry} />;
+      return <OccupationalHealthcareElement entry={entry} />;
     case "HealthCheck":
       return <HealthCheckElement entry={entry} />;
     default:

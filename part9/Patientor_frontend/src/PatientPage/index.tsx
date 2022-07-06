@@ -31,7 +31,7 @@ const PatientPage = () => {
       }
     };
     void fetchPatient();
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   const localStoragePatient: string | null = localStorage.getItem(`${id}`);
 
