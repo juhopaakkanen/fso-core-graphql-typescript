@@ -4,10 +4,10 @@ Content-Type: application/json
 {
     "date" : "01-02-1989",
     "type": "Hospital",
-    "specialist": "Juho Best",
+    "specialist": "HOUSECD",
     "description": "heyhey",
     "discharge": {
         "date": "01-02-1989",
-        "criteria": ""
+        "criteria": "dead"
     }
 }
