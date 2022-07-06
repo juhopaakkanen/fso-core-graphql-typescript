@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Female, Male, Transgender } from "@mui/icons-material";
+
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
-import { useParams } from "react-router-dom";
 import { Patient } from "../types";
-import { Female, Male, Transgender } from "@mui/icons-material";
 import EntryDetails from "../components/EntryDetails";
 
 const PatientPage = () => {
