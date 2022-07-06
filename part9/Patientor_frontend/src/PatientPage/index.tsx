@@ -43,24 +43,17 @@ const PatientPage = () => {
     return <p>loading info..</p>;
   }
 
-  const genderIcon = () => {
-    switch (patient.gender) {
-      case "male":
-        return <Male />;
-      case "female":
-        return <Female />;
-      case "other":
-        return <Transgender />;
-      default:
-        throw new Error("gender not valid");
-    }
+  const GenderIcons = {
+    male: <Male />,
+    female: <Female />,
+    other: <Transgender />,
   };
 
   return (
     <div className="App">
       <h2>
         {patient.name}
-        {genderIcon()}
+        {GenderIcons[patient.gender]}
       </h2>
       <p>
         ssn: {patient.ssn} <br />
