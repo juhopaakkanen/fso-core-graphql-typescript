@@ -1,7 +1,7 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import { NewPatient, Patient } from '../types';
-import toNewPatient from '../utils';
+import { NewPatient, Patient, Entry, EntryWithoutId } from '../types';
+import { toNewPatient, toNewEntry } from '../utils';
 
 const router = express.Router();
 
@@ -24,6 +24,22 @@ router.post('/', (req, res) => {
     const newPatient: NewPatient = toNewPatient(req.body);
     const addedPatient: Patient = patientService.addPatient(newPatient);
     res.json(addedPatient);
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(400).send(e.message);
+    }
+  }
+});
+
+router.post('/:id/entries', (req, res) => {
+  try {
+    const { id } = req.params;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const newEntry: EntryWithoutId | undefined = toNewEntry(req.body);
+    if (newEntry) {
+      const addedEntry: Entry = patientService.addEntry(id, newEntry);
+      res.json(addedEntry);
+    }
   } catch (e) {
     if (e instanceof Error) {
       res.status(400).send(e.message);
