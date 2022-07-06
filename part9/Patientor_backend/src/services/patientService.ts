@@ -34,11 +34,15 @@ const addPatient = (newPatient: NewPatient): Patient => {
 };
 
 const addEntry = (id: string, newEntry: EntryWithoutId): Entry => {
-  //const patient = patients.find((p) => p.id === id);
-  console.log(id);
-  const entryId: string = uuid();
-  const entry: Entry = { id: entryId, ...newEntry };
+  if (!patients.find((p) => p.id === id)) {
+    throw new Error('there is no patient with given id');
+  }
 
+  const entry: Entry = { id: uuid(), ...newEntry };
+
+  patients.map((a) =>
+    a.id !== id ? a : { ...a, entries: a.entries.push(entry) }
+  );
   return entry;
 };
 
