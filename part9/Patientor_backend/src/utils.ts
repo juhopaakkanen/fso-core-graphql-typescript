@@ -142,10 +142,31 @@ const parseSickLeave = (sickLeave: unknown): SickLeave | undefined => {
     endDate: unknown;
   };
   const parsedSickLeave = {
-    startDate: parseDate(Fields.startDate),
-    endDate: parseDate(Fields.endDate)
+    startDate: parseOptionalDate(Fields.startDate),
+    endDate: parseOptionalDate(Fields.endDate)
   };
+
+  if (
+    parsedSickLeave.startDate === 'malformed date' ||
+    parsedSickLeave.endDate === 'malformed date'
+  ) {
+    return undefined;
+  }
   return parsedSickLeave;
+};
+
+const parseOptionalDate = (date: unknown): string => {
+  if (!date || !isString(date) || !isDate(date)) {
+    return 'malformed date';
+  }
+  return date;
+};
+
+const parseDischargeString = (value: unknown): string => {
+  if (!value || !isString(value)) {
+    return 'malformed criteria';
+  }
+  return value;
 };
 
 const parseDischarge = (discharge: unknown): Discharge | undefined => {
@@ -160,9 +181,15 @@ const parseDischarge = (discharge: unknown): Discharge | undefined => {
     criteria: unknown;
   };
   const parsedDischarge = {
-    date: parseDate(Fields.date),
-    criteria: parseString(Fields.criteria, 'criteria')
+    date: parseOptionalDate(Fields.date),
+    criteria: parseDischargeString(Fields.criteria)
   };
+  if (
+    parsedDischarge.date === 'malformed date' ||
+    parsedDischarge.criteria === 'malformed criteria'
+  ) {
+    return undefined;
+  }
   return parsedDischarge;
 };
 
