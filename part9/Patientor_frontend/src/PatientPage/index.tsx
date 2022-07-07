@@ -2,15 +2,28 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Female, Male, Transgender } from "@mui/icons-material";
+import { Button } from "@material-ui/core";
 
 import { apiBaseUrl } from "../constants";
-import { useStateValue, updatePatient } from "../state";
-import { Patient } from "../types";
+import { useStateValue, updatePatient, addEntry } from "../state";
+import { Patient, Entry } from "../types";
 import EntryDetails from "../components/EntryDetails";
+import AddPatientModal from "../AddEntryModal";
+import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
 
 const PatientPage = () => {
   const [{ patients }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
+
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
   if (!id) {
     return null;
@@ -18,30 +31,44 @@ const PatientPage = () => {
 
   React.useEffect(() => {
     const fetchPatient = async () => {
-      if (!localStorage.getItem(`${id}`)) {
-        try {
-          const { data: patientFromApi } = await axios.get<Patient>(
-            `${apiBaseUrl}/patients/${id}`
-          );
-          dispatch(updatePatient(patientFromApi));
-          localStorage.setItem(`${id}`, JSON.stringify(patientFromApi));
-        } catch (e) {
-          console.error(e);
-        }
+      try {
+        const { data: patientFromApi } = await axios.get<Patient>(
+          `${apiBaseUrl}/patients/${id}`
+        );
+        dispatch(updatePatient(patientFromApi));
+      } catch (e) {
+        console.error(e);
       }
     };
     void fetchPatient();
   }, [dispatch, id]);
 
-  const localStoragePatient: string | null = localStorage.getItem(`${id}`);
-
-  const patient: Patient = localStoragePatient
-    ? (JSON.parse(localStoragePatient) as Patient)
-    : patients[id];
+  const patient: Patient = patients[id];
 
   if (!patient) {
     return <p>loading info..</p>;
   }
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      dispatch(addEntry(id, newEntry));
+      closeModal();
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        console.error(e?.response?.data || "Unrecognized axios error");
+        setError(
+          String(e?.response?.data?.error) || "Unrecognized axios error"
+        );
+      } else {
+        console.error("Unknown error", e);
+        setError("Unknown error");
+      }
+    }
+  };
 
   const GenderIcons = {
     male: <Male />,
@@ -65,6 +92,15 @@ const PatientPage = () => {
           <EntryDetails entry={entry} />
         </div>
       ))}
+      <AddPatientModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button variant="contained" onClick={() => openModal()}>
+        Add New Entry
+      </Button>
     </div>
   );
 };

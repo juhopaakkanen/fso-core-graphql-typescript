@@ -8,7 +8,7 @@ import {
 } from "../types";
 import listDiagnoses from "../utils/listDiagnoses";
 import HealthCheckIcon from "../utils/HealthCheckIcon";
-import assertNever from "../utils/assertNever";
+import { assertNever } from "../utils/helpers";
 
 const entryStyle = {
   paddingTop: 10,

@@ -2,8 +2,9 @@ import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, SelectField, GenderOption } from "./FormField";
+import { TextField, SelectField, GenderOption } from "../components/FormField";
 import { Gender, Patient } from "../types";
+import { isDate } from "../utils/helpers";
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
@@ -43,6 +44,9 @@ export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
         }
         if (!values.occupation) {
           errors.occupation = requiredError;
+        }
+        if (!isDate(values.dateOfBirth)) {
+          errors.dateOfBirth = "Malformatted date of birth";
         }
         return errors;
       }}
