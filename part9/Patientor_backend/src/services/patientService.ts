@@ -26,9 +26,7 @@ const findById = (id: string): Patient | undefined => {
 };
 
 const addPatient = (newPatient: NewPatient): Patient => {
-  const id: string = uuid();
-  const patient: Patient = { id: id, ...newPatient };
-
+  const patient: Patient = { id: uuid(), ...newPatient };
   patients.push(patient);
   return patient;
 };
@@ -37,7 +35,6 @@ const addEntry = (id: string, newEntry: EntryWithoutId): Entry => {
   if (!patients.find((p) => p.id === id)) {
     throw new Error('there is no patient with given id');
   }
-
   const entry: Entry = { id: uuid(), ...newEntry };
 
   patients.map((a) =>

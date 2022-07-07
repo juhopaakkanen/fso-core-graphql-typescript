@@ -8,6 +8,6 @@ Content-Type: application/json
     "description": "heyhey",
     "discharge": {
         "date": "01-02-1989",
-        "criteria": "dead"
+        "criteria": "deadd"
     }
 }
