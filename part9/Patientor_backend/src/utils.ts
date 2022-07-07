@@ -13,9 +13,9 @@ const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
-const parseString = (value: unknown, name: string): string => {
+const parseString = (value: unknown, label: string): string => {
   if (!value || !isString(value)) {
-    throw new Error(`Incorrect or missing ${name}`);
+    throw new Error(`Incorrect or missing ${label}`);
   }
   return value;
 };
