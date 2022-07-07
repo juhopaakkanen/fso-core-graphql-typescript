@@ -25,7 +25,7 @@ const HospitalElement = ({ entry }: { entry: HospitalEntry }) => {
       <em>{entry.description}</em> <br />
       diagnose by {entry.specialist} <br />
       discharged: {entry.discharge?.date || "no"} <br />
-      criteria: {entry.discharge?.criteria || "not available"}
+      criteria: {entry.discharge?.criteria}
       {listDiagnoses(entry)}
     </div>
   );
