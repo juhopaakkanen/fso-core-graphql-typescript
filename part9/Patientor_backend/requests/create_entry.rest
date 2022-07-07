@@ -3,11 +3,12 @@ Content-Type: application/json
 
 {
     "date" : "01-02-1989",
-    "type": "Hospital",
+    "type": "OccupationalHealthcare",
     "specialist": "HOUSECD",
     "description": "heyhey",
-    "discharge": {
-        "date": "01-02-1989",
-        "criteria": "deadd"
+    "employerName": "FBI",
+    "sickLeave": {
+        "startDate": "01-02-1989",
+        "endDate": "01-02-1989"
     }
 }
