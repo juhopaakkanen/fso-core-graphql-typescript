@@ -9,6 +9,7 @@ export type EntryFormValues =
   | HealthCheckValues
   | HospitalValues
   | OccupationalValues;
+
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
