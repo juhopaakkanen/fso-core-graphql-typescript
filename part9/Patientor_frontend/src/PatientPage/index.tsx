@@ -8,12 +8,10 @@ import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient, addEntry } from "../state";
 import { Patient, Entry } from "../types";
 import EntryDetails from "../components/EntryDetails";
-import {
-  HospitalModal,
-  HealthCheckModal,
-  OccupationalModal,
-  EntryFormValues,
-} from "../AddEntryModal";
+import AddEntryModal, { EntryFormValues } from "../modals/AddEntryModal";
+import HealthCheckForm from "../modals/AddEntryModal/HealthCheckForm";
+import HospitalForm from "../modals/AddEntryModal/HospitalForm";
+import OccupationalForm from "../modals/AddEntryModal/OccupationalForm";
 
 const PatientPage = () => {
   const [{ patients }, dispatch] = useStateValue();
@@ -26,10 +24,10 @@ const PatientPage = () => {
   const [modalOccupationalOpen, setOccupationalModal] =
     React.useState<boolean>(false);
 
-  const closeModal = (
-    set: React.Dispatch<React.SetStateAction<boolean>>
-  ): void => {
-    set(false);
+  const closeModals = (): void => {
+    setHealthCheckModal(false);
+    setHospitalModal(false);
+    setOccupationalModal(false);
     setError(undefined);
   };
 
@@ -64,9 +62,7 @@ const PatientPage = () => {
         values
       );
       dispatch(addEntry(id, newEntry));
-      closeModal(setHealthCheckModal);
-      closeModal(setHospitalModal);
-      closeModal(setOccupationalModal);
+      closeModals();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         console.error(e?.response?.data || "Unrecognized axios error");
@@ -103,31 +99,34 @@ const PatientPage = () => {
         </div>
       ))}
       ADD NEW ENTRY:&nbsp;
-      <HealthCheckModal
+      <AddEntryModal
         modalOpen={modalHealthCheckOpen}
         onSubmit={submitNewEntry}
         error={error}
-        onClose={() => closeModal(setHealthCheckModal)}
+        onClose={closeModals}
+        Form={HealthCheckForm}
       />
       <Button variant="contained" onClick={() => setHealthCheckModal(true)}>
         HEALTHCHECK
       </Button>
       &nbsp;&nbsp;&nbsp;
-      <HospitalModal
+      <AddEntryModal
         modalOpen={modalHospitalOpen}
         onSubmit={submitNewEntry}
         error={error}
-        onClose={() => closeModal(setHospitalModal)}
+        onClose={closeModals}
+        Form={HospitalForm}
       />
       <Button variant="contained" onClick={() => setHospitalModal(true)}>
         HOSPITAL
       </Button>
       &nbsp;&nbsp;&nbsp;
-      <OccupationalModal
+      <AddEntryModal
         modalOpen={modalOccupationalOpen}
         onSubmit={submitNewEntry}
         error={error}
-        onClose={() => closeModal(setOccupationalModal)}
+        onClose={closeModals}
+        Form={OccupationalForm}
       />
       <Button variant="contained" onClick={() => setOccupationalModal(true)}>
         OCCUPATIONAL

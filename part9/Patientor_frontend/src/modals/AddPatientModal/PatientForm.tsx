@@ -2,9 +2,9 @@ import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, SelectField, GenderOption } from "../components/FormField";
-import { Gender, Patient } from "../types";
-import { isDate } from "../utils/helpers";
+import { TextField, SelectField, GenderOption } from "../FormField";
+import { Gender, Patient } from "../../types";
+import { isDate } from "../../utils/helpers";
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
 
@@ -19,7 +19,7 @@ const genderOptions: GenderOption[] = [
   { value: Gender.Other, label: "Other" },
 ];
 
-export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
+export const PatientForm = ({ onSubmit, onCancel }: Props) => {
   return (
     <Formik
       initialValues={{
@@ -111,4 +111,4 @@ export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default AddPatientForm;
+export default PatientForm;

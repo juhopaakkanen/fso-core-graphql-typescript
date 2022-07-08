@@ -6,8 +6,8 @@ import {
   HospitalEntry,
   OccupationalHealthcareEntry,
 } from "../types";
-import listDiagnoses from "../utils/listDiagnoses";
-import HealthCheckIcon from "../utils/HealthCheckIcon";
+import DiagnosesList from "./DiagnosesList";
+import HealthCheckIcon from "./HealthCheckIcon";
 import { assertNever } from "../utils/helpers";
 
 const entryStyle = {
@@ -26,7 +26,7 @@ const HospitalElement = ({ entry }: { entry: HospitalEntry }) => {
       diagnose by {entry.specialist} <br />
       discharged: {entry.discharge?.date || "no"} <br />
       criteria: {entry.discharge?.criteria}
-      {listDiagnoses(entry)}
+      <DiagnosesList entry={entry} />
     </div>
   );
 };
@@ -42,7 +42,7 @@ const OccupationalHealthcareElement = ({
       <em>{entry.description}</em> <br />
       diagnose by {entry.specialist} <br />
       sickleave: {entry.sickLeave?.startDate || "no"} {entry.sickLeave?.endDate}
-      {listDiagnoses(entry)}
+      <DiagnosesList entry={entry} />
     </div>
   );
 };
@@ -54,7 +54,7 @@ const HealthCheckElement = ({ entry }: { entry: HealthCheckEntry }) => {
       <em>{entry.description}</em> <br />
       <HealthCheckIcon rating={entry.healthCheckRating} /> <br />
       diagnose by {entry.specialist}
-      {listDiagnoses(entry)}
+      <DiagnosesList entry={entry} />
     </div>
   );
 };

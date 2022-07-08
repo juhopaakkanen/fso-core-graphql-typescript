@@ -1,7 +1,7 @@
 import { useStateValue } from "../state";
 import { Entry } from "../types";
 
-const listDiagnoses = (entry: Entry) => {
+const DiagnosesList = ({ entry }: { entry: Entry }) => {
   const [{ diagnoses }] = useStateValue();
   return (
     <div>
@@ -16,4 +16,4 @@ const listDiagnoses = (entry: Entry) => {
   );
 };
 
-export default listDiagnoses;
+export default DiagnosesList;

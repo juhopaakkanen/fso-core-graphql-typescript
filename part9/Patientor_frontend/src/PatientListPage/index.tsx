@@ -2,8 +2,8 @@ import React from "react";
 import axios from "axios";
 import { Box, Table, Button, TableHead, Typography } from "@material-ui/core";
 
-import { PatientFormValues } from "../AddPatientModal/PatientForm";
-import AddPatientModal from "../AddPatientModal";
+import { PatientFormValues } from "../modals/AddPatientModal/PatientForm";
+import AddPatientModal from "../modals/AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";

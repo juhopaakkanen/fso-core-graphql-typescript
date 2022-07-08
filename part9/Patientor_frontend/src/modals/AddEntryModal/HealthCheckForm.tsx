@@ -1,16 +1,16 @@
 import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
-import { isDate } from "../utils/helpers";
+import { isDate } from "../../utils/helpers";
 
 import {
   TextField,
   SelectField,
   HealthCheckOption,
   DiagnosisSelection,
-} from "../components/FormField";
-import { HealthCheckEntryWithoutId, HealthCheckRating } from "../types";
-import { useStateValue } from "../state";
+} from "../FormField";
+import { HealthCheckEntryWithoutId, HealthCheckRating } from "../../types";
+import { useStateValue } from "../../state";
 
 export type HealthCheckValues = HealthCheckEntryWithoutId;
 

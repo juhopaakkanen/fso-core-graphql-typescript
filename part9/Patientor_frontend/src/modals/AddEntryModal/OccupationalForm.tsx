@@ -2,19 +2,19 @@ import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
 
-import { isDate, isOptionalDate } from "../utils/helpers";
-import { TextField, DiagnosisSelection } from "../components/FormField";
-import { HospitalEntryWithoutId } from "../types";
-import { useStateValue } from "../state";
+import { isDate, isOptionalDate } from "../../utils/helpers";
+import { TextField, DiagnosisSelection } from "../FormField";
+import { OccupationalHealthcareEntryWithoutId } from "../../types";
+import { useStateValue } from "../../state";
 
-export type HospitalValues = HospitalEntryWithoutId;
+export type OccupationalValues = OccupationalHealthcareEntryWithoutId;
 
 interface Props {
-  onSubmit: (values: HospitalEntryWithoutId) => void;
+  onSubmit: (values: OccupationalHealthcareEntryWithoutId) => void;
   onCancel: () => void;
 }
 
-export const HospitalForm = ({ onSubmit, onCancel }: Props) => {
+export const OccupationalForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
@@ -24,10 +24,11 @@ export const HospitalForm = ({ onSubmit, onCancel }: Props) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        type: "Hospital",
-        discharge: {
-          date: "",
-          criteria: "",
+        employerName: "",
+        type: "OccupationalHealthcare",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
         },
       }}
       onSubmit={onSubmit}
@@ -43,14 +44,23 @@ export const HospitalForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
+        if (!values.employerName) {
+          errors.employerName = requiredError;
+        }
         if (!isDate(values.date)) {
           errors.date = "Malformatted date";
         }
         if (
-          values.discharge !== undefined &&
-          !isOptionalDate(values.discharge.date)
+          values.sickLeave !== undefined &&
+          !isOptionalDate(values.sickLeave.startDate)
         ) {
-          errors.discharged = "Malformatted date";
+          errors.startDate = "Malformatted date";
+        }
+        if (
+          values.sickLeave !== undefined &&
+          !isOptionalDate(values.sickLeave.endDate)
+        ) {
+          errors.endDate = "Malformatted date";
         }
         return errors;
       }}
@@ -76,21 +86,27 @@ export const HospitalForm = ({ onSubmit, onCancel }: Props) => {
               name="specialist"
               component={TextField}
             />
+            <Field
+              label="Employer"
+              placeholder="Employer"
+              name="employerName"
+              component={TextField}
+            />
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
             <Field
-              label="Discharged"
+              label="Sickleave start date"
               placeholder="YYYY-MM-DD"
-              name="discharge.date"
+              name="sickLeave.startDate"
               component={TextField}
             />
             <Field
-              label="Criteria"
-              placeholder="Discharged criteria"
-              name="discharge.criteria"
+              label="Sickleave end date"
+              placeholder="YYYY-MM-DD"
+              name="sickLeave.endDate"
               component={TextField}
             />
             <Grid>
@@ -125,4 +141,4 @@ export const HospitalForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default HospitalForm;
+export default OccupationalForm;
