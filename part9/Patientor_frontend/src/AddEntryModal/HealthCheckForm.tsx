@@ -1,20 +1,32 @@
 import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
-import { isDate, isOptionalDate } from "../utils/helpers";
+import { isDate } from "../utils/helpers";
 
-import { TextField, DiagnosisSelection } from "../components/FormField";
-import { HospitalEntryWithoutId } from "../types";
+import {
+  TextField,
+  SelectField,
+  HealthCheckOption,
+  DiagnosisSelection,
+} from "../components/FormField";
+import { HealthCheckEntryWithoutId, HealthCheckRating } from "../types";
 import { useStateValue } from "../state";
 
-export type EntryFormValues = HospitalEntryWithoutId;
+export type HealthCheckValues = HealthCheckEntryWithoutId;
 
 interface Props {
-  onSubmit: (values: HospitalEntryWithoutId) => void;
+  onSubmit: (values: HealthCheckEntryWithoutId) => void;
   onCancel: () => void;
 }
 
-export const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
+const healthCheckOptions: HealthCheckOption[] = [
+  { value: HealthCheckRating.Healthy, label: "Healthy" },
+  { value: HealthCheckRating.LowRisk, label: "LowRisk" },
+  { value: HealthCheckRating.HighRisk, label: "HighRisk" },
+  { value: HealthCheckRating.CriticalRisk, label: "CriticalRisk" },
+];
+
+export const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
@@ -24,11 +36,8 @@ export const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        type: "Hospital",
-        discharge: {
-          date: "",
-          criteria: "",
-        },
+        type: "HealthCheck",
+        healthCheckRating: HealthCheckRating.Healthy,
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -45,12 +54,6 @@ export const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
         }
         if (!isDate(values.date)) {
           errors.date = "Malformatted date";
-        }
-        if (
-          values.discharge !== undefined &&
-          !isOptionalDate(values.discharge.date)
-        ) {
-          errors.discharged = "Malformatted date";
         }
         return errors;
       }}
@@ -81,17 +84,10 @@ export const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
-            <Field
-              label="Discharged"
-              placeholder="YYYY-MM-DD"
-              name="discharge.date"
-              component={TextField}
-            />
-            <Field
-              label="Criteria"
-              placeholder="Discharged criteria"
-              name="discharge.criteria"
-              component={TextField}
+            <SelectField
+              label="Health Check Rating"
+              name="healthCheckRating"
+              options={healthCheckOptions}
             />
             <Grid>
               <Grid item>
@@ -125,4 +121,4 @@ export const AddHospitalEntryForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default AddHospitalEntryForm;
+export default HealthCheckForm;

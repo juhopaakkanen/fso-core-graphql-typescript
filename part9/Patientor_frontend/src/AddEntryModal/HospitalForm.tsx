@@ -1,20 +1,20 @@
 import React from "react";
 import { Grid, Button } from "@material-ui/core";
 import { Field, Formik, Form } from "formik";
-import { isDate, isOptionalDate } from "../utils/helpers";
 
+import { isDate, isOptionalDate } from "../utils/helpers";
 import { TextField, DiagnosisSelection } from "../components/FormField";
-import { OccupationalHealthcareEntryWithoutId } from "../types";
+import { HospitalEntryWithoutId } from "../types";
 import { useStateValue } from "../state";
 
-export type EntryFormValues = OccupationalHealthcareEntryWithoutId;
+export type HospitalValues = HospitalEntryWithoutId;
 
 interface Props {
-  onSubmit: (values: OccupationalHealthcareEntryWithoutId) => void;
+  onSubmit: (values: HospitalEntryWithoutId) => void;
   onCancel: () => void;
 }
 
-export const AddOccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
+export const HospitalForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
@@ -24,11 +24,10 @@ export const AddOccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
         date: "",
         specialist: "",
         diagnosisCodes: [],
-        employerName: "",
-        type: "OccupationalHealthcare",
-        sickLeave: {
-          startDate: "",
-          endDate: "",
+        type: "Hospital",
+        discharge: {
+          date: "",
+          criteria: "",
         },
       }}
       onSubmit={onSubmit}
@@ -44,23 +43,14 @@ export const AddOccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if (!values.employerName) {
-          errors.employerName = requiredError;
-        }
         if (!isDate(values.date)) {
           errors.date = "Malformatted date";
         }
         if (
-          values.sickLeave !== undefined &&
-          !isOptionalDate(values.sickLeave.startDate)
+          values.discharge !== undefined &&
+          !isOptionalDate(values.discharge.date)
         ) {
-          errors.startDate = "Malformatted date";
-        }
-        if (
-          values.sickLeave !== undefined &&
-          !isOptionalDate(values.sickLeave.endDate)
-        ) {
-          errors.endDate = "Malformatted date";
+          errors.discharged = "Malformatted date";
         }
         return errors;
       }}
@@ -86,27 +76,21 @@ export const AddOccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
               name="specialist"
               component={TextField}
             />
-            <Field
-              label="Employer"
-              placeholder="Employer"
-              name="employerName"
-              component={TextField}
-            />
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
             <Field
-              label="Sickleave start date"
+              label="Discharged"
               placeholder="YYYY-MM-DD"
-              name="sickLeave.startDate"
+              name="discharge.date"
               component={TextField}
             />
             <Field
-              label="Sickleave end date"
-              placeholder="YYYY-MM-DD"
-              name="sickLeave.endDate"
+              label="Criteria"
+              placeholder="Discharged criteria"
+              name="discharge.criteria"
               component={TextField}
             />
             <Grid>
@@ -141,4 +125,4 @@ export const AddOccupationalEntryForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default AddOccupationalEntryForm;
+export default HospitalForm;
