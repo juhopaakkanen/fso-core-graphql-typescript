@@ -9,11 +9,17 @@ const Blog = () => {
   const user = useSelector((state) => state.user)
   const blogs = useSelector((state) => state.blogs)
   const id = useParams().id
-  const blog = blogs.find((b) => b.id === id)
+  const blog = blogs.find((b) => b.id === parseInt(id))
 
   const handleLikeClick = () => {
     try {
-      dispatch(likeBlog(blog.id, { ...blog, user: blog.user.id }))
+      dispatch(
+        likeBlog(blog.id, {
+          ...blog,
+          user: blog.user.id,
+          likes: blog.likes + 1
+        })
+      )
       dispatch(setNotification(`Liked ${blog.title}`))
     } catch (error) {
       dispatch(setNotification(error.response.data.error, true))
@@ -52,7 +58,7 @@ const Blog = () => {
       <h3>comments</h3>
       <CommentForm />
       <ul>
-        {blog.comments.map((comment, index) => (
+        {blog.comments?.map((comment, index) => (
           <li key={index}>{comment}</li>
         ))}
       </ul>
