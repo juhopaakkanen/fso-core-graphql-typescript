@@ -8,3 +8,5 @@ The course covers testing, configuration and environment management, and the use
 Participants are expected to have good programming skills, basic knowledge of web programming and databases, and to know the basics of working with the Git version-control system. You are also expected to have perseverance and the ability for independent problem solving and information seeking.
 
 ### [Course contents](https://fullstackopen.com/en/#course-contents)
+
+![Screenshot](certificate-fullstack.png)
