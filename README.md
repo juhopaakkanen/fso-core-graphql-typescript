@@ -10,3 +10,9 @@ Participants are expected to have good programming skills, basic knowledge of we
 ### [Course contents](https://fullstackopen.com/en/#course-contents)
 
 ![Screenshot](certificate-fullstack.png)
+
+Other modules parts:
+[React Native](https://github.com/juhopaakkanen/fso-rate-repository-app)
+[CI/CD](https://github.com/juhopaakkanen/fso-pokedex)
+[Containers](https://github.com/juhopaakkanen/fso-containers-applications)
+[Relational Databases](https://github.com/juhopaakkanen/fso-relational-databases)
