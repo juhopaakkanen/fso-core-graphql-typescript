@@ -10,7 +10,7 @@ Participants are expected to have good programming skills, basic knowledge of we
 ![Screenshot](certificate-fullstack.png)
 
 ### Other modules:
-### [React Native](https://github.com/juhopaakkanen/fso-rate-repository-app)
-### [CI/CD](https://github.com/juhopaakkanen/fso-pokedex)
-### [Containers](https://github.com/juhopaakkanen/fso-containers-applications)
-### [Relational Databases](https://github.com/juhopaakkanen/fso-relational-databases)
+### Part 10: [React Native](https://github.com/juhopaakkanen/fso-rate-repository-app)
+### Part 11: [CI/CD](https://github.com/juhopaakkanen/fso-pokedex)
+### Part 12: [Containers](https://github.com/juhopaakkanen/fso-containers-applications)
+### Part 13: [Relational Databases](https://github.com/juhopaakkanen/fso-relational-databases)
